@@ -1,7 +1,19 @@
 import Link from "next/link";
 import css from "./SidebarNotes.module.css";
 
-const categories = ["All", "Work", "Personal", "Meeting", "Shopping", "Todo"];
+const categories = [
+    "All",
+    "Todo",
+    "Work",
+    "Personal",
+    "Shopping",
+    "Meeting",
+    "Ideas",
+    "Travel",
+    "Finance",
+    "Health",
+    "Important",
+];
 
 export default function SidebarNotes() {
     return (

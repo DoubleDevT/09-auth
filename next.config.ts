@@ -2,11 +2,21 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     images: {
-        remotePatterns: [{ protocol: "https", hostname: "picsum.photos" }],
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "picsum.photos",
+            },
+            {
+                protocol: "https",
+                hostname: "ac.goit.global",
+            },
+            {
+                protocol: "https",
+                hostname: "notehub-api.goit.study",
+            },
+        ],
     },
-};
-
-const NextConfig = {
     experimental: {
         typedRoutes: false,
     },
@@ -14,4 +24,5 @@ const NextConfig = {
         ignoreBuildErrors: true,
     },
 };
+
 export default nextConfig;

@@ -35,3 +35,7 @@
 .navigation li a:hover {
     color: #ddd;
 }
+.navigationItem {
+    display: flex;
+    align-items: center;
+}
