@@ -12,6 +12,24 @@ export default function NoteForm() {
     const { draft, setDraft, clearDraft } = useNoteDraftStore();
     const queryClient = useQueryClient();
 
+    const TAGS: readonly NoteTag[] = [
+        "Todo",
+        "Work",
+        "Personal",
+        "Meeting",
+        "Shopping",
+        "Ideas",
+        "Travel",
+        "Finance",
+        "Health",
+        "Important",
+    ] as const;
+
+    const isNoteTag = (val: unknown): val is NoteTag =>
+        typeof val === "string" && (TAGS as readonly string[]).includes(val);
+
+    const selectedTag: NoteTag = isNoteTag(draft.tag) ? draft.tag : TAGS[0];
+
     const mutation = useMutation({
         mutationFn: createNote,
         onSuccess: () => {
@@ -31,15 +49,20 @@ export default function NoteForm() {
     ) => {
         const { name, value } = e.target;
 
-        setDraft((prev) => ({
-            ...prev,
-            [name]: name === "tag" ? (value as NoteTag) : value,
-        }));
+        setDraft(
+            name === "tag" && isNoteTag(value)
+                ? { ...draft, tag: value }
+                : { ...draft, [name]: value }
+        );
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        mutation.mutate(draft);
+        mutation.mutate({
+            title: (draft.title ?? "").trim(),
+            content: (draft.content ?? "").trim(),
+            tag: selectedTag,
+        });
     };
 
     const handleCancel = () => {
@@ -84,15 +107,16 @@ export default function NoteForm() {
                 <select
                     id="tag"
                     name="tag"
-                    value={draft.tag}
+                    value={selectedTag}
                     onChange={handleChange}
                     className={css.select}
+                    required
                 >
-                    <option value="Todo">Todo</option>
-                    <option value="Work">Work</option>
-                    <option value="Personal">Personal</option>
-                    <option value="Meeting">Meeting</option>
-                    <option value="Shopping">Shopping</option>
+                    {TAGS.map((t) => (
+                        <option key={t} value={t}>
+                            {t}
+                        </option>
+                    ))}
                 </select>
             </div>
 
